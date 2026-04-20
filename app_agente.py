@@ -78,7 +78,15 @@ def processa_cartella(cartella):
 # --- INTERFACCIA ---
 st.set_page_config(page_title="Agente IA Multi-Doc", layout="wide")
 st.title("🤖 Agente IA Aziendale v2.0")
-
+# --- GUIDA ALLE IA ---
+with st.sidebar.expander("❓ Quale IA scegliere?"):
+    st.markdown("""
+    - **Llama-3-8b**: Ultra-veloce, ottima per riassunti semplici e domande dirette.
+    - **Llama-3-70b**: Il giusto compromesso. Molto intelligente, brava nel ragionamento logico.
+    - **Llama-3-120b (Il Mostro)**: La più potente. Ideale per analisi complesse, dati tecnici e file CSV complicati.
+    
+    *Nota: I modelli più grandi potrebbero essere leggermente più lenti nel rispondere.*
+    """)
 # Sidebar
 st.sidebar.header("⚙️ Configurazione")
 try:
@@ -95,6 +103,8 @@ file_caricati = st.sidebar.file_uploader(
     type=["pdf", "csv"], 
     accept_multiple_files=True
 )
+# Privacy
+st.sidebar.caption("🔒 I file sono caricati solo temporaneamente e cancellati alla chiusura della sessione.")
 
 if st.sidebar.button("🔄 Indicizza Documenti"):
     if file_caricati:
@@ -137,6 +147,8 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
     else:
         st.sidebar.warning("⚠️ Carica almeno un file prima!")
 
+st.sidebar.divider()
+st.sidebar.info("🤖 **Come funziona:** Questo agente usa la tecnica RAG (Retrieval-Augmented Generation) per leggere i tuoi documenti e rispondere usando la potenza di Groq LLM.")
 # Chat
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
