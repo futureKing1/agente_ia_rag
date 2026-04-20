@@ -129,8 +129,8 @@ if prompt_utente := st.chat_input("Fai una domanda..."):
         with st.chat_message("assistant"):
             try:
             	#Prima riga aggiorna la chiave che utilizza(random)
-            	client = get_groq_client()
-            	
+                client = get_groq_client()
+            
                 response = client.chat.completions.create(
                     model=modello_scelto,
                     messages=[{"role": "system", "content": "Sei un assistente aziendale preciso."},
