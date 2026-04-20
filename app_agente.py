@@ -81,9 +81,9 @@ st.title("🤖 Agente IA Aziendale v2.0")
 # --- GUIDA ALLE IA ---
 with st.sidebar.expander("❓ Quale IA scegliere?"):
     st.markdown("""
-    - **Llama-3-8b**: Ultra-veloce, ottima per riassunti semplici e domande dirette.
-    - **Llama-3-70b**: Il giusto compromesso. Molto intelligente, brava nel ragionamento logico.
-    - **Llama-3-120b (Il Mostro)**: La più potente. Ideale per analisi complesse, dati tecnici e file CSV complicati.
+    - **NomeModello*-8b**: Ultra-veloce, ottima per riassunti semplici e domande dirette.
+    - **NomeModello*-70b**: Il giusto compromesso. Molto intelligente, brava nel ragionamento logico.
+    - **NomeModello*-120b**: La più potente. Ideale per analisi complesse, dati tecnici e file CSV complicati.
     
     *Nota: I modelli più grandi potrebbero essere leggermente più lenti nel rispondere.*
     """)
