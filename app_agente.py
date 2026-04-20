@@ -88,17 +88,54 @@ try:
 except:
     modello_scelto = "mixtral-8x7b-32768"
 
-cartella_input = st.sidebar.text_input("Cartella documenti", value="documenti_aziendali")
+# --- CARICAMENTO FILE ---
+st.sidebar.subheader("📁 Carica Documenti")
+file_caricati = st.sidebar.file_uploader(
+    "Trascina qui i tuoi PDF o CSV", 
+    type=["pdf", "csv"], 
+    accept_multiple_files=True
+)
 
-if st.sidebar.button("🔄 Indicizza/Aggiorna Dati"):
-    with st.spinner("Analisi in corso..."):
-        st.session_state.chunks = processa_cartella(cartella_input)
-        if st.session_state.chunks:
-            vettori = embed_model.encode(st.session_state.chunks)
-            index = faiss.IndexFlatL2(vettori.shape[1])
-            index.add(np.array(vettori))
-            st.session_state.index = index
-            st.sidebar.success(f"✅ {len(st.session_state.chunks)} frammenti pronti!")
+if st.sidebar.button("🔄 Indicizza Documenti"):
+    if file_caricati:
+        with st.spinner("Analisi dei file in corso..."):
+            tutti_i_chunks = []
+            
+            for file in file_caricati:
+                # Se è un PDF
+                if file.name.endswith(".pdf"):
+                    import PyPDF2
+                    pdf_reader = PyPDF2.PdfReader(file)
+                    testo = ""
+                    for page in pdf_reader.pages:
+                        testo += page.extract_text()
+                    # Dividi in pezzi da 1000 caratteri
+                    for i in range(0, len(testo), 1000):
+                        tutti_i_chunks.append(f"[{file.name}]: {testo[i:i+1000]}")
+                
+                # Se è un CSV
+                elif file.name.endswith(".csv"):
+                    import pandas as pd
+                    df = pd.read_csv(file)
+                    for index, row in df.iterrows():
+                        contenuto_riga = ", ".join([f"{col}: {val}" for col, val in row.items()])
+                        tutti_i_chunks.append(f"[{file.name} - riga {index}]: {contenuto_riga}")
+
+            if tutti_i_chunks:
+                # Crea i vettori e l'indice FAISS
+                st.session_state.chunks = tutti_i_chunks
+                vettori = embed_model.encode(tutti_i_chunks)
+                
+                import faiss
+                import numpy as np
+                dim = vettori.shape[1]
+                index = faiss.IndexFlatL2(dim)
+                index.add(np.array(vettori))
+                
+                st.session_state.index = index
+                st.sidebar.success(f"✅ {len(tutti_i_chunks)} pezzi indicizzati!")
+    else:
+        st.sidebar.warning("⚠️ Carica almeno un file prima!")
 
 # Chat
 for message in st.session_state.messages:
