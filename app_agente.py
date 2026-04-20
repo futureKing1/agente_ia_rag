@@ -143,12 +143,23 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
                 index.add(np.array(vettori))
                 
                 st.session_state.index = index
-                st.sidebar.success(f"✅ {len(tutti_i_chunks)} pezzi indicizzati!")
+                st.sidebar.success(f"✅ Documentazione caricata con successo! Interrogatorio disponibile -->")
+                st.sidebar.balloon()
     else:
         st.sidebar.warning("⚠️ Carica almeno un file prima!")
 
 st.sidebar.divider()
 st.sidebar.info("🤖 **Come funziona:** Questo agente usa la tecnica RAG (Retrieval-Augmented Generation) per leggere i tuoi documenti e rispondere usando la potenza di Groq LLM.")
+
+st.sidebar.divider() # Aggiunge una linea sottile di separazione
+st.sidebar.markdown(
+    """
+    <div style='text-align: center; color: grey; font-size: 0.8em;'>
+        Powered by Marrasenzacash 🇮🇹
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 # Chat
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
