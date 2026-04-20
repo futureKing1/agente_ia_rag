@@ -144,13 +144,18 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
                 
                 st.session_state.index = index
                 st.sidebar.success(f"✅ Documentazione caricata con successo! Interrogatorio disponibile -->")
-                st.sidebar.balloon()
+                st.balloons()
     else:
         st.sidebar.warning("⚠️ Carica almeno un file prima!")
 
 st.sidebar.divider()
-st.sidebar.info("🤖 **Come funziona:** Questo agente usa la tecnica RAG (Retrieval-Augmented Generation) per leggere i tuoi documenti e rispondere usando la potenza di Groq LLM.")
-
+with st.sidebar.expander("ℹ️ Come funziona l'Agente?"):
+    st.markdown("""
+    Questo agente utilizza la tecnologia **RAG** (Retrieval-Augmented Generation):
+    1. **Analisi**: Legge i file che carichi.
+    2. **Memoria**: Crea un indice vettoriale dei contenuti.
+    3. **Risposta**: Quando fai una domanda, l'IA cerca le parti rilevanti nei tuoi documenti e le usa per risponderti in modo preciso.
+    """)
 st.sidebar.divider() # Aggiunge una linea sottile di separazione
 st.sidebar.markdown(
     """
