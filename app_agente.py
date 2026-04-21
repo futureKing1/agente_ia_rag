@@ -32,20 +32,14 @@ st.markdown("""
         display: hidden !important;
     }
 
-    /* 3. SFONDO CON IMMAGINE GIÀ SFOCATA DAL SERVER */
+/* 3. SFONDO SEMPLICE (Senza immagine, come richiesto) */
     [data-testid="stAppViewContainer"] {
-        background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
-                          url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2070&auto=format&fit=crop&blur=50");
-        background-size: cover !important;
-        background-position: center !important;
-        background-attachment: fixed !important;
+        background-color: #f8f9fb; /* Grigio chiarissimo pulito */
     }
 
-    /* 4. TEMA SCURO (Cambia il velo in scuro) */
     @media (prefers-color-scheme: dark) {
         [data-testid="stAppViewContainer"] {
-            background-image: linear-gradient(rgba(14, 17, 23, 0.85), rgba(14, 17, 23, 0.85)), 
-                              url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2070&auto=format&fit=crop&blur=50") !important;
+            background-color: #0e1117; /* Sfondo scuro standard */
         }
     }
     
