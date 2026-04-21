@@ -25,7 +25,8 @@ st.markdown("""
     }
 
     /* 2. ELIMINA IL FOOTER (La scritta in basso a destra) */
-    footer {
+    ._container_gzau3_1 _viewerBadge_nim44_23,
+    ._profileContainer_gzau3_53 {
         display: hidden !important;
     }
     [data-testid="stFooter"] {
@@ -35,12 +36,6 @@ st.markdown("""
 /* 3. SFONDO SEMPLICE (Senza immagine, come richiesto) */
     [data-testid="stAppViewContainer"] {
         background-color: #f8f9fb; /* Grigio chiarissimo pulito */
-    }
-
-    @media (prefers-color-scheme: dark) {
-        [data-testid="stAppViewContainer"] {
-            background-color: #0e1117; /* Sfondo scuro standard */
-        }
     }
     
     /* Rende i testi più leggibili sopra lo sfondo */
