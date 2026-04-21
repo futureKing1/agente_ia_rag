@@ -11,31 +11,32 @@ from dotenv import load_dotenv
 import random
 st.markdown("""
     <style>
-    /* 1. Nasconde solo il tasto GitHub e "Manage App", ma lascia i 3 puntini */
-    header a[href*="github.com"], .stAppDeployButton {
-        display: none !important;
-    }
+/* 1. Nasconde il link a GitHub e il tasto Deploy, ma SALVA i 3 puntini del menù */
+    header a { display: none !important; }
+    .stAppDeployButton { display: none !important; }
 
-    /* 2. Aggiunge uno sfondo leggero e professionale */
-    [data-testid="stAppViewContainer"] {
-        background-image: url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
-        background-size: cover;
-        background-attachment: fixed;
-    }
-
-    /* 3. Aggiunge un "velo" semitrasparente per migliorare la leggibilità del testo */
-    [data-testid="stAppViewContainer"]::before {
+    /* 2. Sfondo di default (Tema Chiaro): Immagine chiara sfocata + velo bianco */
+    .stApp::before {
         content: "";
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background-color: rgba(255, 255, 255, 0.85); /* Velo bianco al 85% */
+        position: fixed;
+        /* Lo facciamo leggermente più grande per non vedere i bordi sfocati */
+        top: -5%; left: -5%; width: 110%; height: 110%; 
         z-index: -1;
+        background-size: cover;
+        background-position: center;
+        filter: blur(8px); /* <--- IL LIVELLO DI SFOCATURA */
+        
+        /* Immagine diurna con velo bianco al 60% */
+        background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
+                          url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
     }
 
-    /* Se l'utente usa il tema SCURO, il velo diventa scuro automaticamente (opzionale) */
+    /* 3. Variante per il Tema Scuro: Immagine scura sfocata + velo nero/grigio */
     @media (prefers-color-scheme: dark) {
-        [data-testid="stAppViewContainer"]::before {
-            background-color: rgba(14, 17, 23, 0.85); /* Velo scuro per tema notte */
+        .stApp::before {
+            /* Immagine notturna con velo scuro all'85% per far leggere le scritte bianche */
+            background-image: linear-gradient(rgba(14, 17, 23, 0.85), rgba(14, 17, 23, 0.85)), 
+                              url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop");
         }
     }
     </style>
