@@ -116,8 +116,8 @@ except:
 # --- CARICAMENTO FILE ---
 st.sidebar.subheader("📁 Carica Documenti")
 file_caricati = st.sidebar.file_uploader(
-    "Trascina qui i tuoi PDF o CSV", 
-    type=["pdf", "csv"], 
+    "Trascina qui i tuoi PDF, Docx,xlsx CSV", 
+    type=["pdf", "csv", "docx", "xls", "xlsx"], 
     accept_multiple_files=True
 )
 # Privacy
