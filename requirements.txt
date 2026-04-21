@@ -6,3 +6,5 @@ numpy
 sentence-transformers
 groq
 python-dotenv
+python-docx
+openpyxl
