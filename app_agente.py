@@ -13,44 +13,45 @@ import random
 st.set_page_config(page_title="DocTor", layout="wide")
 st.title("🤖 Agente IA DocTor v2.0")
 st.markdown("""
-    <style>
-/* 1. NASCONDE TASTO GITHUB E DEPLOY (Cerca ogni link che porta a GitHub) */
-    header a[href*="github.com"], 
-    header button, 
-    .stAppDeployButton {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
+<style>
+/* 1. NASCONDE HEADER (GitHub/Deploy) lasciando spazio per i 3 puntini */
+    [data-testid="stHeader"] {
+        background-color: rgba(0,0,0,0) !important;
     }
+    
+    /* Nasconde i bottoni di sinistra nell'header (GitHub e Deploy) */
+    [data-testid="stHeader"] > div:first-child {
+        visibility: hidden !important;
+    }
+
+    /* 2. ELIMINA IL FOOTER (La scritta in basso a destra) */
     footer {
-        visibility: hidden !important;
-        height: 0 !important;
+        display: none !important;
+    }
+    [data-testid="stFooter"] {
+        display: none !important;
+    }
 
-    /* 3. SFONDO SFOCATO (Metodo alternativo più potente) */
+    /* 3. SFONDO CON IMMAGINE GIÀ SFOCATA DAL SERVER */
     [data-testid="stAppViewContainer"] {
-        background-image: url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
+                          url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2070&auto=format&fit=crop&blur=50");
+        background-size: cover !important;
+        background-position: center !important;
+        background-attachment: fixed !important;
     }
 
-/* Creiamo un "velo" che sfocherà tutto ciò che sta dietro */
-    [data-testid="stAppViewContainer"]::before {
-        content: "";
-        position: fixed;
-        top: 0; left: 0; width: 100vw; height: 100vh;
-        backdrop-filter: blur(15px) brightness(0.9); /* <--- SFOCATURA FORZATA */
-        -webkit-backdrop-filter: blur(15px) brightness(0.9); 
-        background-color: rgba(255, 255, 255, 0.6); /* Velo chiaro */
-        z-index: -1;
-    }
-
-   /* 4. TEMA SCURO */
+    /* 4. TEMA SCURO (Cambia il velo in scuro) */
     @media (prefers-color-scheme: dark) {
-        [data-testid="stAppViewContainer"]::before {
-            background-color: rgba(14, 17, 23, 0.8) !important;
-            backdrop-filter: blur(15px) brightness(0.7);
+        [data-testid="stAppViewContainer"] {
+            background-image: linear-gradient(rgba(14, 17, 23, 0.85), rgba(14, 17, 23, 0.85)), 
+                              url("https://images.unsplash.com/photo-1477346611705-65d1883cee1e?q=80&w=2070&auto=format&fit=crop&blur=50") !important;
         }
+    }
+    
+    /* Rende i testi più leggibili sopra lo sfondo */
+    .stMarkdown {
+        color: inherit;
     }
     </style>
     """, unsafe_allow_html=True)
