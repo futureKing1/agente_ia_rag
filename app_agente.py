@@ -188,8 +188,8 @@ for file in file_caricati:
                 st.session_state.index = index
                 st.sidebar.success(f"✅ Documentazione caricata con successo! Interrogatorio disponibile -->")
                 st.balloons()
-    else:
-        st.sidebar.warning("⚠️ Carica almeno un file prima!")
+            else:
+                st.sidebar.warning("⚠️ Carica almeno un file prima!")
 
 st.sidebar.divider()
 with st.sidebar.expander("ℹ️ Come funziona l'Agente?"):
