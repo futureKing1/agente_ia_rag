@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 import random
 st.markdown("""
     <style>
-    #MainMenu {visibility: hidden;}
     header {visibility: hidden;}
     footer {visibility: hidden;}
     </style>
