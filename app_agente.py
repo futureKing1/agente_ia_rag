@@ -11,9 +11,33 @@ from dotenv import load_dotenv
 import random
 st.markdown("""
     <style>
-    #MainMenu {visibility: show;}
-    header {visibility: hidden;}
-    footer {visibility: hidden;}
+    /* 1. Nasconde solo il tasto GitHub e "Manage App", ma lascia i 3 puntini */
+    header a[href*="github.com"], .stAppDeployButton {
+        display: none !important;
+    }
+
+    /* 2. Aggiunge uno sfondo leggero e professionale */
+    [data-testid="stAppViewContainer"] {
+        background-image: url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
+        background-size: cover;
+        background-attachment: fixed;
+    }
+
+    /* 3. Aggiunge un "velo" semitrasparente per migliorare la leggibilità del testo */
+    [data-testid="stAppViewContainer"]::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(255, 255, 255, 0.85); /* Velo bianco al 85% */
+        z-index: -1;
+    }
+
+    /* Se l'utente usa il tema SCURO, il velo diventa scuro automaticamente (opzionale) */
+    @media (prefers-color-scheme: dark) {
+        [data-testid="stAppViewContainer"]::before {
+            background-color: rgba(14, 17, 23, 0.85); /* Velo scuro per tema notte */
+        }
+    }
     </style>
     """, unsafe_allow_html=True)
 # 1. SETUP INIZIALE
