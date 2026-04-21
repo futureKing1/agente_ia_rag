@@ -9,6 +9,9 @@ from sentence_transformers import SentenceTransformer
 from groq import Groq
 from dotenv import load_dotenv
 import random
+# --- INTERFACCIA ---
+st.set_page_config(page_title="DocTor", layout="wide")
+st.title("🤖 Agente IA DocTor v2.0")
 st.markdown("""
     <style>
 /* 1. NASCONDE TASTO GITHUB E DEPLOY (Cerca ogni link che porta a GitHub) */
@@ -115,9 +118,6 @@ def processa_cartella(cartella):
                 
     return tutti_i_chunks
 
-# --- INTERFACCIA ---
-st.set_page_config(page_title="DocTor", layout="wide")
-st.title("🤖 Agente IA DocTor v2.0")
 # --- GUIDA ALLE IA ---
 with st.sidebar.expander("❓ Quale IA scegliere?"):
     st.markdown("""
