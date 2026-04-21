@@ -12,13 +12,7 @@ import random
 st.set_page_config(page_title="DocTor", layout="wide")
 st.title("🤖 Agente IA DocTor v2.0")
 st.markdown("""
-<style>
-    /* 1. RESET TOTALE DELLO SFONDO (Toglie l'immagine e mette un colore) */
-    [data-testid="stAppViewContainer"] {
-        background-image: none !important;
-        background-color: #f0f2f6 !important; /* Colore chiaro di default */
-    }
-
+    <style>
     /* 2. KILLER DEL FOOTER (Made with Streamlit) */
     /* Colpiamo il tag 'footer' e qualsiasi div che contenga la parola 'Status' */
     footer {display: none !important;}
@@ -32,12 +26,6 @@ st.markdown("""
     /* Questo colpisce il quadratino flottante in basso a destra se esiste ancora */
     div[class*="st-emotion-cache"] > div[button] {display: none !important;}
 
-    /* 4. TEMA SCURO AUTOMATICO */
-    @media (prefers-color-scheme: dark) {
-        [data-testid="stAppViewContainer"] {
-            background-color: #0e1117 !important;
-        }
-    }
     </style>
     """, unsafe_allow_html=True)
 # 1. SETUP INIZIALE
