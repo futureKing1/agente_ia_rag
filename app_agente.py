@@ -11,43 +11,43 @@ from dotenv import load_dotenv
 import random
 st.markdown("""
     <style>
-       /* 1. NASCONDE GITHUB E DEPLOY (A prova di smartphone) */
-    header[data-testid="stHeader"] {
-        background: rgba(0,0,0,0) !important;
-    }
-    header[data-testid="stHeader"] a, 
-    header[data-testid="stHeader"] .stAppDeployButton {
+/* 1. NASCONDE TASTO GITHUB E DEPLOY (Cerca ogni link che porta a GitHub) */
+    header a[href*="github.com"], 
+    header button, 
+    .stAppDeployButton {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
     }
 
-    /* 2. SFONDO SFOCATO CON OVERLAY */
+    /* 2. SFONDO CON SFOCATURA INCORPORATA */
     [data-testid="stAppViewContainer"] {
-        background-image: url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
+        background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
+                    url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop") !important;
+        background-size: cover !important;
+        background-attachment: fixed !important;
+        backdrop-filter: blur(12px) !important; /* Sfocatura per i contenuti sopra */
+        -webkit-backdrop-filter: blur(12px) !important; /* Per Safari/iPhone */
     }
 
-    /* Velo di leggibilità (Blur + Colore) */
-    [data-testid="stAppViewContainer"]::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        backdrop-filter: blur(10px); /* Sfocatura vera */
-        background-color: rgba(255, 255, 255, 0.7); /* Velo chiaro di base */
-        z-index: -1;
+    /* 3. EFFETTO SFOCATO EXTRA SUL CONTENITORE */
+    [data-testid="stMainViewContainer"] {
+        background: rgba(255, 255, 255, 0.1) !important;
+        backdrop-filter: blur(15px) !important;
+        -webkit-backdrop-filter: blur(15px) !important;
     }
 
-    /* 3. TEMA SCURO AUTOMATICO */
+    /* 4. TEMA SCURO (Cambia il velo da bianco a nero) */
     @media (prefers-color-scheme: dark) {
-        [data-testid="stAppViewContainer"]::before {
-            background-color: rgba(14, 17, 23, 0.85) !important;
+        [data-testid="stAppViewContainer"] {
+            background: linear-gradient(rgba(14, 17, 23, 0.8), rgba(14, 17, 23, 0.8)), 
+                        url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop") !important;
+            background-size: cover !important;
+        }
+        [data-testid="stMainViewContainer"] {
+            background: rgba(0, 0, 0, 0.2) !important;
         }
     }
-    
-    /* 4. PULIZIA EXTRA */
-    #MainMenu {visibility: visible;} /* Lasciamo i 3 puntini */
-    footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 # 1. SETUP INIZIALE
