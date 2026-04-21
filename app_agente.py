@@ -11,33 +11,33 @@ from dotenv import load_dotenv
 import random
 st.markdown("""
     <style>
-/* 1. Nasconde il link a GitHub e il tasto Deploy, ma SALVA i 3 puntini del menù */
-    header a { display: none !important; }
-    .stAppDeployButton { display: none !important; }
+        /* 1. Nasconde il link a GitHub e il tasto Deploy, ma SALVA i 3 puntini del menù */
+      header a { display: none !important; }
+      .stAppDeployButton { display: none !important; }
 
-    /* 2. Sfondo di default (Tema Chiaro): Immagine chiara sfocata + velo bianco */
-    .stApp::before {
-        content: "";
-        position: fixed;
-        /* Lo facciamo leggermente più grande per non vedere i bordi sfocati */
-        top: -5%; left: -5%; width: 110%; height: 110%; 
-        z-index: -1;
-        background-size: cover;
-        background-position: center;
-        filter: blur(8px); /* <--- IL LIVELLO DI SFOCATURA */
+      /* 2. Sfondo di default (Tema Chiaro): Immagine chiara sfocata + velo bianco */
+      .stApp::before {
+          content: "";
+          position: fixed;
+          /* Lo facciamo leggermente più grande per non vedere i bordi sfocati */
+          top: -5%; left: -5%; width: 110%; height: 110%; 
+          z-index: -1;
+          background-size: cover;
+          background-position: center;
+          filter: blur(8px); /* <--- IL LIVELLO DI SFOCATURA */
         
-        /* Immagine diurna con velo bianco al 60% */
-        background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
+          /* Immagine diurna con velo bianco al 60% */
+          background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
                           url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
-    }
+      }
 
     /* 3. Variante per il Tema Scuro: Immagine scura sfocata + velo nero/grigio */
-    @media (prefers-color-scheme: dark) {
-        .stApp::before {
-            /* Immagine notturna con velo scuro all'85% per far leggere le scritte bianche */
-            background-image: linear-gradient(rgba(14, 17, 23, 0.85), rgba(14, 17, 23, 0.85)), 
+      @media (prefers-color-scheme: dark) {
+          .stApp::before {
+              /* Immagine notturna con velo scuro all'85% per far leggere le scritte bianche */
+              background-image: linear-gradient(rgba(14, 17, 23, 0.85), rgba(14, 17, 23, 0.85)), 
                               url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop");
-        }
+          }
     }
     </style>
     """, unsafe_allow_html=True)
