@@ -11,34 +11,43 @@ from dotenv import load_dotenv
 import random
 st.markdown("""
     <style>
-        /* 1. Nasconde il link a GitHub e il tasto Deploy, ma SALVA i 3 puntini del menù */
-      header a { display: none !important; }
-      .stAppDeployButton { display: none !important; }
-
-      /* 2. Sfondo di default (Tema Chiaro): Immagine chiara sfocata + velo bianco */
-      .stApp::before {
-          content: "";
-          position: fixed;
-          /* Lo facciamo leggermente più grande per non vedere i bordi sfocati */
-          top: -5%; left: -5%; width: 110%; height: 110%; 
-          z-index: -1;
-          background-size: cover;
-          background-position: center;
-          filter: blur(8px); /* <--- IL LIVELLO DI SFOCATURA */
-        
-          /* Immagine diurna con velo bianco al 60% */
-          background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), 
-                          url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
-      }
-
-    /* 3. Variante per il Tema Scuro: Immagine scura sfocata + velo nero/grigio */
-      @media (prefers-color-scheme: dark) {
-          .stApp::before {
-              /* Immagine notturna con velo scuro all'85% per far leggere le scritte bianche */
-              background-image: linear-gradient(rgba(14, 17, 23, 0.85), rgba(14, 17, 23, 0.85)), 
-                              url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop");
-          }
+       /* 1. NASCONDE GITHUB E DEPLOY (A prova di smartphone) */
+    header[data-testid="stHeader"] {
+        background: rgba(0,0,0,0) !important;
     }
+    header[data-testid="stHeader"] a, 
+    header[data-testid="stHeader"] .stAppDeployButton {
+        display: none !important;
+    }
+
+    /* 2. SFONDO SFOCATO CON OVERLAY */
+    [data-testid="stAppViewContainer"] {
+        background-image: url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    /* Velo di leggibilità (Blur + Colore) */
+    [data-testid="stAppViewContainer"]::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        backdrop-filter: blur(10px); /* Sfocatura vera */
+        background-color: rgba(255, 255, 255, 0.7); /* Velo chiaro di base */
+        z-index: -1;
+    }
+
+    /* 3. TEMA SCURO AUTOMATICO */
+    @media (prefers-color-scheme: dark) {
+        [data-testid="stAppViewContainer"]::before {
+            background-color: rgba(14, 17, 23, 0.85) !important;
+        }
+    }
+    
+    /* 4. PULIZIA EXTRA */
+    #MainMenu {visibility: visible;} /* Lasciamo i 3 puntini */
+    footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 # 1. SETUP INIZIALE
