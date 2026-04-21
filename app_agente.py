@@ -22,33 +22,34 @@ st.markdown("""
         visibility: hidden !important;
         opacity: 0 !important;
     }
+    footer {
+        visibility: hidden !important;
+        height: 0 !important;
 
-    /* 2. SFONDO CON SFOCATURA INCORPORATA */
+    /* 3. SFONDO SFOCATO (Metodo alternativo più potente) */
     [data-testid="stAppViewContainer"] {
-        background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
-                    url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop") !important;
-        background-size: cover !important;
-        background-attachment: fixed !important;
-        backdrop-filter: blur(12px) !important; /* Sfocatura per i contenuti sopra */
-        -webkit-backdrop-filter: blur(12px) !important; /* Per Safari/iPhone */
+        background-image: url("https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
     }
 
-    /* 3. EFFETTO SFOCATO EXTRA SUL CONTENITORE */
-    [data-testid="stMainViewContainer"] {
-        background: rgba(255, 255, 255, 0.1) !important;
-        backdrop-filter: blur(15px) !important;
-        -webkit-backdrop-filter: blur(15px) !important;
+/* Creiamo un "velo" che sfocherà tutto ciò che sta dietro */
+    [data-testid="stAppViewContainer"]::before {
+        content: "";
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        backdrop-filter: blur(15px) brightness(0.9); /* <--- SFOCATURA FORZATA */
+        -webkit-backdrop-filter: blur(15px) brightness(0.9); 
+        background-color: rgba(255, 255, 255, 0.6); /* Velo chiaro */
+        z-index: -1;
     }
 
-    /* 4. TEMA SCURO (Cambia il velo da bianco a nero) */
+   /* 4. TEMA SCURO */
     @media (prefers-color-scheme: dark) {
-        [data-testid="stAppViewContainer"] {
-            background: linear-gradient(rgba(14, 17, 23, 0.8), rgba(14, 17, 23, 0.8)), 
-                        url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop") !important;
-            background-size: cover !important;
-        }
-        [data-testid="stMainViewContainer"] {
-            background: rgba(0, 0, 0, 0.2) !important;
+        [data-testid="stAppViewContainer"]::before {
+            background-color: rgba(14, 17, 23, 0.8) !important;
+            backdrop-filter: blur(15px) brightness(0.7);
         }
     }
     </style>
