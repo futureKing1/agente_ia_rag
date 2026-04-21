@@ -252,3 +252,4 @@ if prompt_utente := st.chat_input("Fai una domanda..."):
                 st.error(f"Errore: {e}")
     else:
         st.warning("⚠️ Indicizza i documenti prima!")
+#sbloccatidiocan
