@@ -14,33 +14,30 @@ st.set_page_config(page_title="DocTor", layout="wide")
 st.title("🤖 Agente IA DocTor v2.0")
 st.markdown("""
 <style>
-/* 1. NASCONDE HEADER (GitHub/Deploy) lasciando spazio per i 3 puntini */
-    [data-testid="stHeader"] {
-        background-color: rgba(0,0,0,0) !important;
-    }
-    
-    /* Nasconde i bottoni di sinistra nell'header (GitHub e Deploy) */
-    [data-testid="stHeader"] > div:first-child {
-        visibility: hidden !important;
-    }
-
-    /* 2. ELIMINA IL FOOTER (La scritta in basso a destra) */
-    ._container_gzau3_1 _viewerBadge_nim44_23,
-    ._profileContainer_gzau3_53 {
-        display: hidden !important;
-    }
-    [data-testid="stFooter"] {
-        display: hidden !important;
-    }
-
-/* 3. SFONDO SEMPLICE (Senza immagine, come richiesto) */
+    /* 1. RESET TOTALE DELLO SFONDO (Toglie l'immagine e mette un colore) */
     [data-testid="stAppViewContainer"] {
-        background-color: #f8f9fb; /* Grigio chiarissimo pulito */
+        background-image: none !important;
+        background-color: #f0f2f6 !important; /* Colore chiaro di default */
     }
+
+    /* 2. KILLER DEL FOOTER (Made with Streamlit) */
+    /* Colpiamo il tag 'footer' e qualsiasi div che contenga la parola 'Status' */
+    footer {display: none !important;}
+    [data-testid="stFooter"] {display: none !important;}
+
+    /* 3. KILLER DELLA TOOLBAR (Manage app / Profilo in basso a destra) */
+    /* Usiamo i selettori 'wildcard': cerca classi che CONTENGONO queste parole */
+    div[class*="stAppToolbar"] {display: none !important;}
+    div[class*="stStatusWidget"] {display: none !important;}
     
-    /* Rende i testi più leggibili sopra lo sfondo */
-    .stMarkdown {
-        color: inherit;
+    /* Questo colpisce il quadratino flottante in basso a destra se esiste ancora */
+    div[class*="st-emotion-cache"] > div[button] {display: none !important;}
+
+    /* 4. TEMA SCURO AUTOMATICO */
+    @media (prefers-color-scheme: dark) {
+        [data-testid="stAppViewContainer"] {
+            background-color: #0e1117 !important;
+        }
     }
     </style>
     """, unsafe_allow_html=True)
