@@ -128,13 +128,13 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
             with st.spinner("Analisi dei file in corso..."):
                 tutti_i_chunks = []
                 
-                for file in file_caricati:
+for file in file_caricati:
                     nome_file = file.name
                     estensione = nome_file.split('.')[-1].lower()
                     testo_estratto = ""
                     
                     try:
-                        # --- GESTIONE PDF ---
+                        # --- PDF ---
                         if estensione == "pdf":
                             import PyPDF2
                             pdf_reader = PyPDF2.PdfReader(file)
@@ -142,34 +142,37 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
                                 estratto = page.extract_text()
                                 if estratto: testo_estratto += estratto + "\n"
                         
-                        # --- GESTIONE WORD (.docx) ---
+                        # --- WORD (Solo .docx) ---
                         elif estensione == "docx":
                             from docx import Document
                             doc = Document(file)
                             testo_estratto = "\n".join([para.text for para in doc.paragraphs])
                         
-                        # --- GESTIONE EXCEL (.xlsx, .xls) ---
+                        # --- EXCEL (.xlsx, .xls) ---
                         elif estensione in ["xlsx", "xls"]:
                             import pandas as pd
+                            # Per gli Excel leggiamo tutti i fogli o solo il primo
                             df = pd.read_excel(file)
-                            # Trasformiamo la tabella in testo riga per riga per l'IA
                             testo_estratto = df.to_string(index=False)
                         
-                        # --- GESTIONE CSV ---
+                        # --- CSV ---
                         elif estensione == "csv":
                             import pandas as pd
-                            # sep=None prova a capire da solo se usi virgola o punto e virgola
                             df = pd.read_csv(file, sep=None, engine='python')
                             testo_estratto = df.to_string(index=False)
 
-                        # SUDDIVISIONE IN CHUNKS (Pezzi da 1000 caratteri)
+                        # Se l'estensione non è supportata (es. .doc vecchio)
+                        else:
+                            st.warning(f"⚠️ Il formato .{estensione} di '{nome_file}' non è supportato. Usa .docx!")
+
+                        # Divisione in pezzi
                         if testo_estratto:
                             for i in range(0, len(testo_estratto), 1000):
                                 chunk_testo = testo_estratto[i:i+1000]
                                 tutti_i_chunks.append(f"[{nome_file}]: {chunk_testo}")
                         
                     except Exception as e:
-                        st.error(f"Errore nella lettura di {nome_file}: {e}")
+                        st.error(f"❌ Errore con {nome_file}: {e}")
 
             if tutti_i_chunks:
                 # Crea i vettori e l'indice FAISS
