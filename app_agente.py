@@ -26,10 +26,10 @@ st.markdown("""
 
     /* 2. ELIMINA IL FOOTER (La scritta in basso a destra) */
     footer {
-        display: none !important;
+        display: hidden !important;
     }
     [data-testid="stFooter"] {
-        display: none !important;
+        display: hidden !important;
     }
 
     /* 3. SFONDO CON IMMAGINE GIÀ SFOCATA DAL SERVER */
