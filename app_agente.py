@@ -19,11 +19,10 @@ st.markdown("""
     footer {visibility: hidden; height: 0px;}
     [data-testid="stFooter"] {display: none !important;}
     
-/* 3. PULIZIA HEADER (Hai detto che ti va bene così, lo lasciamo solo trasparente) */
-    [data-testid="stHeader"] {
-        background: rgba(0,0,0,0);
-        color: white;
-
+/* Questo è un trucco per coprire l'area dei bottoni se dovessero riapparire */
+    header[data-testid="stHeader"] > div:first-child {
+        visibility: hidden !important;
+    }
     </style>
     """, unsafe_allow_html=True)
 # 1. SETUP INIZIALE
