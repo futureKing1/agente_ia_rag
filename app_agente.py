@@ -19,8 +19,10 @@ st.markdown("""
     footer {visibility: hidden; height: 0px;}
     [data-testid="stFooter"] {display: none !important;}
     
-    /* Questo colpisce il quadratino flottante in basso a destra se esiste ancora */
-    div[class*="st-emotion-cache"] > div[button] {display: none !important;}
+/* 3. PULIZIA HEADER (Hai detto che ti va bene così, lo lasciamo solo trasparente) */
+    [data-testid="stHeader"] {
+        background: rgba(0,0,0,0);
+        color: white;
 
     </style>
     """, unsafe_allow_html=True)
