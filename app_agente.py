@@ -15,15 +15,15 @@ st.set_page_config(page_title="DocTor", layout="wide")
 st.title("🤖 Agente IA DocTor v2.0")
 st.markdown("""
     <style>
-/* 1. NASCONDE IL TASTO GITHUB (L'icona del gatto) */
+/* 1. NASCONDE IL TASTO GITHUB */
     .viewerBadge_container__1QSob, .stDeployButton, [data-testid="stHeaderActionElements"] {
         display: none !important;
     }
-
-    /* 2. NASCONDE IL TASTO 'DEPLOY' E ALTRI ELEMENTI EXTRA NELL'HEADER */
-    [data-testid="stAppDeployButton"] {
-        display: none !important;
+/* Questo è un trucco per coprire l'area dei bottoni se dovessero riapparire */
+    header[data-testid="stHeader"] > div:first-child {
+        visibility: hidden !important;
     }
+    #MainMenu {visibility: visible;} /* Assicuriamoci che i 3 puntini restino */
     </style>
     """, unsafe_allow_html=True)
 # 1. SETUP INIZIALE
