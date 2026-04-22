@@ -15,15 +15,9 @@ st.set_page_config(page_title="DocTor", layout="wide")
 st.title("🤖 Agente IA DocTor v2.0")
 st.markdown("""
     <style>
-    /* 2. KILLER DEL FOOTER (Made with Streamlit) */
-    /* Colpiamo il tag 'footer' e qualsiasi div che contenga la parola 'Status' */
-    footer {display: none !important;}
+/* 1. SPARIZIONE TOTALE DEL FOOTER (Made with Streamlit) */
+    footer {visibility: hidden; height: 0px;}
     [data-testid="stFooter"] {display: none !important;}
-
-    /* 3. KILLER DELLA TOOLBAR (Manage app / Profilo in basso a destra) */
-    /* Usiamo i selettori 'wildcard': cerca classi che CONTENGONO queste parole */
-    div[class*="stAppToolbar"] {display: none !important;}
-    div[class*="stStatusWidget"] {display: none !important;}
     
     /* Questo colpisce il quadratino flottante in basso a destra se esiste ancora */
     div[class*="st-emotion-cache"] > div[button] {display: none !important;}
