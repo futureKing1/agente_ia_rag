@@ -60,36 +60,7 @@ if "chunks" not in st.session_state:
     st.session_state.chunks = []
 
 # 2. FUNZIONE MULTI-FORMATO (PDF + CSV) - Fase C
-def processa_cartella(cartella):
-    tutti_i_chunks = []
-    if not os.path.exists(cartella):
-        os.makedirs(cartella)
-        
-    for filename in os.listdir(cartella):
-        path = os.path.join(cartella, filename)
-        
-        # Gestione PDF
-        if filename.endswith(".pdf"):
-            try:
-                with open(path, "rb") as f:
-                    reader = PyPDF2.PdfReader(f)
-                    testo = "".join([p.extract_text() for p in reader.pages])
-                    for i in range(0, len(testo), 1000):
-                        tutti_i_chunks.append(f"[{filename}]: " + testo[i:i+1000])
-            except Exception as e:
-                st.error(f"Errore leggendo PDF {filename}: {e}")
-        
-        # Gestione CSV (Fase C)
-        elif filename.endswith(".csv"):
-            try:
-                df = pd.read_csv(path)
-                for index, row in df.iterrows():
-                    frase_riga = f"In {filename}, riga {index}: " + ", ".join([f"{col}: {val}" for col, val in row.items()])
-                    tutti_i_chunks.append(frase_riga)
-            except Exception as e:
-                st.error(f"Errore leggendo CSV {filename}: {e}")
-                
-    return tutti_i_chunks
+
 
 # --- GUIDA ALLE IA ---
 with st.sidebar.expander("❓ Quale IA scegliere?"):
@@ -169,7 +140,30 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
                         
                     except Exception as e:
                         st.error(f"❌ Errore con {nome_file}: {e}")
-
+# --- 3. CREAZIONE INDICE FAISS ---
+                if tutti_i_chunks:
+                    try:
+                        import numpy as np
+                        import faiss
+                        
+                        # Creiamo i vettori (la firma numerica dei testi)
+                        vettori = embed_model.encode(tutti_i_chunks)
+                        vettori = np.array(vettori).astype('float32')
+                        
+                        # Creiamo l'indice FAISS
+                        d = vettori.shape[1]
+                        index = faiss.IndexFlatL2(d)
+                        index.add(vettori)
+                        
+                        # Salviamo tutto nello stato dell'app
+                        st.session_state.index = index
+                        st.session_state.chunks = tutti_i_chunks
+                        
+                        st.success(f"✅ Memoria creata! {len(tutti_i_chunks)} frammenti pronti.")
+                    except Exception as e:
+                        st.error(f"Errore nella creazione dell'indice: {e}")
+                else:
+                    st.warning("⚠️ Nessun testo estratto dai file caricati.")
 st.sidebar.divider()
 with st.sidebar.expander("ℹ️ Come funziona l'Agente?"):
     st.markdown("""
@@ -231,4 +225,3 @@ if prompt_utente := st.chat_input("Fai una domanda..."):
                 st.error(f"Errore: {e}")
     else:
         st.warning("⚠️ Indicizza i documenti prima!")
-#sbloccatidiocan
