@@ -76,7 +76,7 @@ st.sidebar.header("⚙️ Configurazione")
 try:
     lista_modelli = client.models.list()
     nomi_modelli = [m.id for m in lista_modelli.data]
-    modello_scelto = st.sidebar.selectbox("🧠 Modello IA", nomi_modelli, index=0)
+    modello_scelto = st.sidebar.selectbox("🧠 Modello IA", nomi_modelli, index=0, key="modello_scelto")
 except:
     modello_scelto = "mixtral-8x7b-32768"
 
@@ -236,7 +236,7 @@ if prompt_utente := st.chat_input("Fai una domanda..."):
                     response = client.chat.completions.create(
                         model=modello_scelto,
                         messages=[
-                            {"role": "system", "content": "Sei un assistente aziendale preciso che risponde basandosi solo sui documenti forniti."},
+                            {"role": "system", "content": "Sei un assistente aziendale preciso che risponde basandosi solo sui documenti forniti.Non mostrare mai il tuo ragionamento interno o note tecniche."},
                             {"role": "user", "content": prompt_finale}
                         ],
                         temperature=0.1
