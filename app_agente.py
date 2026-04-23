@@ -130,7 +130,7 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
 
                         # Se l'estensione non è supportata (es. .doc vecchio)
                         else:
-                            st.warning(f"⚠️ Il formato .{estensione} di '{nome_file}' non è supportato. Usa .docx!")
+                            st.warning(f"⚠️ Il formato .{estensione} di '{nome_file}' non è supportato. Usa .docx o .pdf!")
 
                         # Divisione in pezzi
                         if testo_estratto:
@@ -159,7 +159,7 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
                         st.session_state.index = index
                         st.session_state.chunks = tutti_i_chunks
                         
-                        st.success(f"✅ Memoria creata! {len(tutti_i_chunks)} frammenti pronti.")
+                        st.success(f"✅ Documentazione studiata, sono pronto a chiarire i tuoi dubbi!")
                     except Exception as e:
                         st.error(f"Errore nella creazione dell'indice: {e}")
                 else:
@@ -192,35 +192,58 @@ if prompt_utente := st.chat_input("Fai una domanda..."):
         st.markdown(prompt_utente)
 
     if st.session_state.index:
-        # FASE A: Query Expansion
         with st.spinner("L'IA sta riflettendo..."):
-            prompt_exp = f"Riformula la domanda '{prompt_utente}' in 3 termini tecnici chiave per la ricerca. Rispondi solo con i termini."
-            res_exp = client.chat.completions.create(model=modello_scelto, messages=[{"role": "user", "content": prompt_exp}])
-            query_estesa = prompt_utente + " " + res_exp.choices[0].message.content
-
-        # Ricerca
-        v_domanda = embed_model.encode([query_estesa])
-        _, indici = st.session_state.index.search(np.array(v_domanda), k=4)
-        contesto = "\n\n".join([st.session_state.chunks[i] for i in indici[0]])
-        storia = "\n".join([f"{m['role']}: {m['content']}" for m in st.session_state.messages[-5:]])
-        
-        # Prompt Finale
-        prompt_finale = f"Usa il contesto: {contesto}\n\nStoria chat: {storia}\n\nRispondi a: {prompt_utente}"
-        
-        with st.chat_message("assistant"):
             try:
-            	#Prima riga aggiorna la chiave che utilizza(random)
+                # Inizializziamo il client Groq
                 client = get_groq_client()
-            
-                response = client.chat.completions.create(
-                    model=modello_scelto,
-                    messages=[{"role": "system", "content": "Sei un assistente aziendale preciso."},
-                              {"role": "user", "content": prompt_finale}],
-                    temperature=0.1
-                )
-                risposta = response.choices[0].message.content
-                st.markdown(risposta)
-                st.session_state.messages.append({"role": "assistant", "content": risposta})
+
+                # --- FASE A: Query Expansion (Protetta) ---
+                query_estesa = prompt_utente
+                try:
+                    prompt_exp = f"Riformula la domanda '{prompt_utente}' in 3 termini tecnici chiave per la ricerca. Rispondi solo con i termini separati da spazio."
+                    res_exp = client.chat.completions.create(
+                        model=modello_scelto, 
+                        messages=[{"role": "user", "content": prompt_exp}],
+                        timeout=5 # Non aspettare in eterno
+                    )
+                    termini_extra = res_exp.choices[0].message.content
+                    query_estesa = f"{prompt_utente} {termini_extra}"
+                except Exception:
+                    # Se la riformulazione fallisce, usiamo solo la domanda originale
+                    query_estesa = prompt_utente
+
+                # --- FASE B: Ricerca nel Database ---
+                v_domanda = embed_model.encode([query_estesa])
+                _, indici = st.session_state.index.search(np.array(v_domanda).astype('float32'), k=4)
+                
+                # Recuperiamo il contesto
+                contesto = "\n\n".join([st.session_state.chunks[i] for i in indici[0]])
+                storia = "\n".join([f"{m['role']}: {m['content']}" for m in st.session_state.messages[-5:]])
+                
+                # --- FASE C: Risposta Finale ---
+                prompt_finale = f"""Usa il seguente contesto per rispondere alla domanda. 
+                Se la risposta non è nel contesto, dillo chiaramente, non inventare nulla.
+                
+                CONTESTO:
+                {contesto}
+                
+                STORIA CHAT:
+                {storia}
+                
+                DOMANDA: {prompt_utente}"""
+                
+                with st.chat_message("assistant"):
+                    response = client.chat.completions.create(
+                        model=modello_scelto,
+                        messages=[
+                            {"role": "system", "content": "Sei un assistente aziendale preciso che risponde basandosi solo sui documenti forniti."},
+                            {"role": "user", "content": prompt_finale}
+                        ],
+                        temperature=0.1
+                    )
+                    risposta = response.choices[0].message.content
+                    st.markdown(risposta)
+                    st.session_state.messages.append({"role": "assistant", "content": risposta})
             except Exception as e:
                 st.error(f"Errore: {e}")
     else:
