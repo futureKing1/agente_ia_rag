@@ -124,7 +124,7 @@ if st.sidebar.button("🔄 Indicizza Documenti"):
             with st.spinner("Analisi dei file in corso..."):
                 tutti_i_chunks = []
                 
-for file in file_caricati:
+                for file in file_caricati:
                     nome_file = file.name
                     estensione = nome_file.split('.')[-1].lower()
                     testo_estratto = ""
@@ -169,23 +169,6 @@ for file in file_caricati:
                         
                     except Exception as e:
                         st.error(f"❌ Errore con {nome_file}: {e}")
-
-                    if tutti_i_chunks:
-                # Crea i vettori e l'indice FAISS
-                        st.session_state.chunks = tutti_i_chunks
-                        vettori = embed_model.encode(tutti_i_chunks)
-                
-                        import faiss
-                        import numpy as np
-                        dim = vettori.shape[1]
-                        index = faiss.IndexFlatL2(dim)
-                        index.add(np.array(vettori))
-                
-                        st.session_state.index = index
-                        st.sidebar.success(f"✅ Documentazione caricata con successo! Interrogatorio disponibile -->")
-                        st.balloons()
-                    else:
-                        st.sidebar.warning("⚠️ Carica almeno un file prima!")
 
 st.sidebar.divider()
 with st.sidebar.expander("ℹ️ Come funziona l'Agente?"):
